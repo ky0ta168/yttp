@@ -109,6 +109,7 @@ export default function App() {
           size="small"
           sx={{
             marginRight: 1,
+            marginBottom: 0.5,
             textTransform: "none"
           }}
           onClick={() => handleOpenSaveForm()}
@@ -130,39 +131,48 @@ export default function App() {
       {/* 動画リスト */}
       <Grid2 container direction="row" spacing={0} sx={{ marginBottom: 1 }}>
         {videoDataList.map((video, index) => (
-          <Grid2 item key={index} sx={{ width: '100%' }}>
+          <Grid2 item key={index} sx={{ maxWidth: '1024px' }}>
             <Box
               sx={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'stretch',
                 marginX: 1,
-                marginTop: 1,
+                marginY: 0.5,
               }}
             >
-              {/* サムネイル */}
-              <Avatar
-                variant="square"
-                src={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`}
-                sx={{
-                  width: "50%",
-                  height: "auto",
-                  objectFit: "contain",
-                  cursor: 'pointer',
-                }}
-                onClick={() => handleOpenPlayer(video)}
-              />
-              {/* 動画タイトル・動画ID */}
-              <Box
-                sx={{
-                  paddingLeft: 1,
-                  cursor: 'pointer',
-                }}
-                onClick={() => handleOpenPlayer(video)}
-              >
-                <Typography variant="body2">{video.title}</Typography>
-                <Typography variant="caption" color="textSecondary">{video.id}</Typography>
-              </Box>
+              <Grid2 container direction="row">
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => handleOpenPlayer(video)}
+                >
+                  {/* サムネイル */}
+                  <Avatar
+                    variant="square"
+                    src={`https://i.ytimg.com/vi/${video.id}/maxresdefault.jpg`}
+                    sx={{
+                      width: "50% ",
+                      height: "auto",
+                      objectFit: "contain",
+                    }}
+                  />
+                  {/* 動画タイトル・動画ID */}
+                  <Box
+                    sx={{
+                      paddingLeft: 1,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Typography variant="body2">{video.title}</Typography>
+                    <Typography variant="caption" color="textSecondary">{video.id}</Typography>
+                  </Box>
+                </Box>
+              </Grid2>
               {/* 操作メニュー */}
               <Box
               >
