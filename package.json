@@ -25,7 +25,7 @@
     "eject": "react-scripts eject",
     "rm": "rm -rf docs",
     "mv": "mv build docs",
-    "git": "git add . && git commit -m deploy && git push origin main",
+    "git": "git add . && git commit && git push origin main",
     "deploy": "yarn rm && yarn build && yarn mv && yarn git"
   },
   "eslintConfig": {
