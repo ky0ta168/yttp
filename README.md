@@ -1,0 +1,22 @@
+# YouTube Translation Player
+
+## 概要
+
+スマホ上で、Chrome拡張機能「Language REACTOR」の機能を利用するためのWebアプリケーション。
+
+[https://ky0ta168.github.io/youtube-translation-player/](https://ky0ta168.github.io/youtube-translation-player/)
+
+## 使い方
+
+1. PCのChrome拡張機能「Language REACTOR」でYouTube動画の翻訳データをExcelで出力
+2. YouTube動画のID、およびタイトルをメモ
+3. GoogleDriveなどを利用し、翻訳データのExcelをスマホでダウンロード
+4. YouTube Translation Playerにアクセスし、「Save video」を押下
+5. ID、タイトル、翻訳データのExcelを入力し、「Save」を押下
+6. 動画のサムネイルを押下することで、動画が翻訳字幕ありで視聴
+
+## 補足
+
+保存した動画はブラウザのローカルストレージに保存されます。
+
+そのため、ブラウザや別端末ではデータの共有はできません。
