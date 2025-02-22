@@ -8,8 +8,10 @@
 
 ## 使い方
 
-1. PCのChrome拡張機能「Language REACTOR」でYouTube動画の翻訳データをExcelで出力
+1. PCのChrome拡張機能「[Language Reactor](https://www.languagereactor.com/)」でYouTube動画の翻訳データをExcelで出力
 2. YouTube動画のID、およびタイトルをメモ
+    - YouTube動画のIDは、`https://www.youtube.com/watch?v=4Az9x5nkTTs`の場合`4Az9x5nkTTs`など
+    - 共有からURLを取得した場合は、`https://youtu.be/4Az9x5nkTTs`のようなURLになるので注意
 3. GoogleDriveなどを利用し、翻訳データのExcelをスマホでダウンロード
 4. YouTube Translation Playerにアクセスし、「Save video」を押下
 5. ID、タイトル、翻訳データのExcelを入力し、「Save」を押下
