@@ -1,4 +1,4 @@
-# YouTube Translation Player
+# YouTube Translation Player (YTTP)
 
 ## 概要
 
