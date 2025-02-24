@@ -1,8 +1,8 @@
 {
-  "name": "youtube-translation-player",
+  "name": "yttp",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ky0ta168.github.io/youtube-translation-player/",
+  "homepage": "https://ky0ta168.github.io/yttp/",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
