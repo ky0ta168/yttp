@@ -2,13 +2,13 @@
 
 ## 概要
 
-スマホ上で、Chrome拡張機能「Language REACTOR」の機能を利用するためのWebアプリケーション。
+スマホ上で、Chrome拡張機能「[Language Reactor](https://www.languagereactor.com/)」の機能を利用するためのWebアプリケーション。
 
 [https://ky0ta168.github.io/youtube-translation-player/](https://ky0ta168.github.io/youtube-translation-player/)
 
 ## 使い方
 
-1. PCのChrome拡張機能「[Language Reactor](https://www.languagereactor.com/)」でYouTube動画の翻訳データをExcelで出力
+1. PCのChrome拡張機能「Language Reactor」でYouTube動画の翻訳データをExcelで出力
 2. YouTube動画のID、およびタイトルをメモ
     - YouTube動画のIDは、`https://www.youtube.com/watch?v=4Az9x5nkTTs`の場合`4Az9x5nkTTs`など
     - 共有からURLを取得した場合は、`https://youtu.be/4Az9x5nkTTs`のようなURLになるので注意
