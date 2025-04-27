@@ -115,7 +115,7 @@ export default function Player({ open, onClose, video }) {
                 width: "100%",
                 textAlign: "center",
                 background: "rgba(0, 0, 0, 0.4)",
-                paddingY: 1
+                paddingY: 2
               }}
             >
               <Typography
