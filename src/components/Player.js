@@ -6,56 +6,56 @@ import {
   Typography
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
-import ReactPlayer from 'react-player/lazy'
+import ReactPlayer from 'react-player/lazy';
 
 export default function Player({ open, onClose, video }) {
   // 字幕表示の有無
-  const [displaySubtitles, setDisplaySubtitles] = useState(false)
+  const [displaySubtitles, setDisplaySubtitles] = useState(false);
   // 英語字幕
-  const [subtitle, setSubtitle] = useState("")
+  const [subtitle, setSubtitle] = useState("");
   // 翻訳字幕
-  const [translation, setTranslation] = useState("")
+  const [translation, setTranslation] = useState("");
 
   // 時間のフォーマット
   const formatTime = (seconds) => {
     const hour = Math.floor(seconds / 3600);
     const min = Math.floor(seconds % 3600 / 60);
-    const sec = Math.floor(seconds % 60)
+    const sec = Math.floor(seconds % 60);
 
     if (hour !== 0) {
-      return `${hour}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`
+      return `${hour}:${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
     } else if (min !== 0) {
-      return `${min}:${sec.toString().padStart(2, '0')}`
+      return `${min}:${sec.toString().padStart(2, '0')}`;
     } else {
-      return `${sec.toString()}s`
+      return `${sec.toString()}s`;
     }
-  }
+  };
 
   // 動画再生時字幕表示
   const handleOnPlay = () => {
-    setDisplaySubtitles(true)
-  }
+    setDisplaySubtitles(true);
+  };
 
   // 動画再生時字幕非表示
   const handleOnPause = () => {
-    setDisplaySubtitles(false)
-  }
+    setDisplaySubtitles(false);
+  };
 
   // 動画再生中の処理
   const handleProgress = (state) => {
-    const formattedTime = formatTime(state.playedSeconds)
+    const formattedTime = formatTime(state.playedSeconds);
     if (video?.subtitles[formattedTime]) {
-      setSubtitle(video?.subtitles[formattedTime].subtitle)
-      setTranslation(video?.subtitles[formattedTime].translation)
+      setSubtitle(video?.subtitles[formattedTime].subtitle);
+      setTranslation(video?.subtitles[formattedTime].translation);
     }
-  }
+  };
 
   // 字幕をクリア
   const clearSubtiles = () => {
-    setSubtitle("")
-    setTranslation("")
-    setDisplaySubtitles(false)
-  }
+    setSubtitle("");
+    setTranslation("");
+    setDisplaySubtitles(false);
+  };
 
   return (
     <Dialog
@@ -80,8 +80,8 @@ export default function Player({ open, onClose, video }) {
           <IconButton
             color="inherit"
             onClick={() => {
-              clearSubtiles()
-              onClose()
+              clearSubtiles();
+              onClose();
             }}
           >
             <CloseIcon />
@@ -111,16 +111,19 @@ export default function Player({ open, onClose, video }) {
             <Box
               sx={{
                 position: 'absolute',
-                bottom: "18svh",
+                bottom: "0",
                 width: "100%",
                 textAlign: "center",
                 background: "rgba(0, 0, 0, 0.4)",
-                paddingY: 0.5
+                paddingY: 1
               }}
             >
               <Typography
                 variant="body1"
-                sx={{ color: "white" }}
+                sx={{
+                  fontSize: "110%",
+                  color: "white"
+                }}
               >
                 {subtitle}
               </Typography>
