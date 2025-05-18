@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Typography,
   Button,
@@ -8,76 +8,145 @@ import {
   AppBar,
   Menu,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert"
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Player from "./components/Player";
 import SaveVideo from "./components/SaveVideo";
-import { getVideoDataList } from "./utils/index"
+import { getVideoDataList } from "./utils/index";
 
 export default function App() {
   // 保存済み動画リスト
-  const [videoDataList, setVideoDataList] = useState([])
+  const [videoDataList, setVideoDataList] = useState([]);
   // 動画プレイヤーの開閉
-  const [openPlayer, setOpenPlayer] = useState(false)
+  const [openPlayer, setOpenPlayer] = useState(false);
   // 再生する動画
-  const [selectedVideo, setSelectedVideo] = useState(null)
+  const [selectedVideo, setSelectedVideo] = useState(null);
   // 動画保存フォームの開閉
-  const [openSaveForm, setOpenSaveForm] = useState(false)
+  const [openSaveForm, setOpenSaveForm] = useState(false);
   // 動画のメニューの開閉
-  const [openMenu, setOpenMenu] = useState(false)
+  const [openMenu, setOpenMenu] = useState(false);
   // メニューのアンカー
   const [anchorEl, setAnchorEl] = useState(null);
   // 削除する動画
-  const [selectedRemoveVideo, setSelectedRemoveVideo] = useState(null)
+  const [selectedRemoveVideo, setSelectedRemoveVideo] = useState(null);
+  // ファイルinputタグのリファレンス
+  const fileInputRef = useRef(null);
 
   // 動画プレイヤーを開く
   const handleOpenPlayer = (video) => {
-    setSelectedVideo(video)
-    setOpenPlayer(true)
-  }
+    setSelectedVideo(video);
+    setOpenPlayer(true);
+  };
 
   // 動画プレイヤーを閉じる
   const handleClosePlayer = () => {
-    setSelectedVideo(null)
-    setOpenPlayer(false)
-  }
+    setSelectedVideo(null);
+    setOpenPlayer(false);
+  };
 
   // 動画保存フォームの開く
   const handleOpenSaveForm = () => {
-    setOpenSaveForm(true)
-  }
+    setOpenSaveForm(true);
+  };
 
   // 動画保存フォームの閉じる
   const handleCloseSaveForm = () => {
-    setOpenSaveForm(false)
-  }
+    setOpenSaveForm(false);
+  };
 
   // 動画メニューを開く
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
-    setOpenMenu(true)
+    setOpenMenu(true);
   };
 
   // 動画メニューを閉じる
   const handleClose = () => {
     setAnchorEl(null);
-    setOpenMenu(false)
+    setOpenMenu(false);
   };
 
   // 動画を削除
   const removeVideoData = () => {
-    const videoId = selectedRemoveVideo.id
+    const videoId = selectedRemoveVideo.id;
     const list = videoDataList.slice().filter(data =>
       data.id !== videoId
-    )
+    );
     // 保存
-    setVideoDataList(list)
-    window.localStorage.setItem("videoDataList", JSON.stringify(list))
-  }
+    setVideoDataList(list);
+    window.localStorage.setItem("videoDataList", JSON.stringify(list));
+  };
+
+  // 動画のデータをJSONファイルで保存
+  const handleExport = () => {
+    exportLocalStorageToFile();
+  };
+
+  // ローカルストレージをファイルとして出力
+  const exportLocalStorageToFile = () => {
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      try {
+        data[key] = JSON.parse(localStorage.getItem(key));
+      } catch (e) {
+        data[key] = localStorage.getItem(key);
+      }
+    }
+
+    const json = JSON.stringify(data, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "videolist.json";
+    a.click();
+
+    // メモリ解放
+    URL.revokeObjectURL(url);
+  };
+
+  const handleButtonClick = () => {
+    // inputをプログラムでクリック
+    fileInputRef.current?.click();
+  };
+
+  // ファイル読み込み
+  const handleFileChange = (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const json = JSON.parse(e.target?.result);
+
+        if (typeof json !== "object" || json === null) {
+          alert("Invalid JSON format.");
+          return;
+        }
+
+        if (window.confirm(`Do you want to load "${file.name}"?`)) {
+          for (const [key, value] of Object.entries(json)) {
+            const stringValue =
+              typeof value === "string" ? value : JSON.stringify(value);
+            localStorage.setItem(key, stringValue);
+          }
+          // ステートの更新
+          setVideoDataList(getVideoDataList());
+        }
+      } catch (err) {
+        alert("Failed to parse JSON: " + err.message);
+      }
+    };
+
+    reader.readAsText(file);
+  };
 
   useEffect(() => {
     // ローカルストレージから動画データを取得
-    setVideoDataList(getVideoDataList())
-  }, [])
+    setVideoDataList(getVideoDataList());
+  }, []);
 
   return (
     <React.Fragment>
@@ -116,6 +185,39 @@ export default function App() {
         >
           Save video
         </Button>
+        <Button
+          color="inherit"
+          variant="outlined"
+          size="small"
+          sx={{
+            marginRight: 1,
+            marginBottom: 0.5,
+            textTransform: "none"
+          }}
+          onClick={() => handleExport()}
+        >
+          Export video list
+        </Button>
+        <Button
+          color="inherit"
+          variant="outlined"
+          size="small"
+          sx={{
+            marginRight: 1,
+            marginBottom: 0.5,
+            textTransform: "none"
+          }}
+          onClick={handleButtonClick}
+        >
+          Import video list
+        </Button>
+        <input
+          type="file"
+          accept=".json"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: "none" }} // 非表示
+        />
         {/* <Button
           color="inherit"
           variant="outlined"
@@ -179,8 +281,8 @@ export default function App() {
                 <MoreVertIcon
                   fontSize='small'
                   onClick={(event) => {
-                    handleMenuClick(event)
-                    setSelectedRemoveVideo(video)
+                    handleMenuClick(event);
+                    setSelectedRemoveVideo(video);
                   }}
                   sx={{
                     cursor: 'pointer',
@@ -214,9 +316,9 @@ export default function App() {
           }}
           onClick={() => {
             if (window.confirm(`Do you want to remove "${selectedRemoveVideo.title}"?`)) {
-              removeVideoData()
+              removeVideoData();
             }
-            setOpenMenu(false)
+            setOpenMenu(false);
           }}
         >
           <Typography variant="body2">
